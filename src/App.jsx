@@ -186,8 +186,8 @@ const App = () => {
     // Check if any expenses are using this category
     const isCategoryUsed = expenses.some(expense => expense.category === categoryToDelete);
     if (isCategoryUsed) {
-      showMessage(`Cannot delete category "${categoryToDelete}" because it is currently used by one or more expenses.`, 'error');
-      return;
+        showMessage(`Cannot delete category "${categoryToDelete}" because it is currently used by one or more expenses.`, 'error');
+        return;
     }
 
     setCustomCategories((prevCategories) => prevCategories.filter((cat) => cat !== categoryToDelete));
@@ -269,7 +269,8 @@ const App = () => {
             color: '#333',
             mb: 4,
             letterSpacing: '-0.05em',
-            fontSize: { xs: '2.5rem', sm: '3rem', md: '3.5rem' }
+            // Adjusted font size for xs screens
+            fontSize: { xs: '2rem', sm: '3rem', md: '3.5rem' }
           }}
         >
           💸 Expense Tracker
@@ -288,6 +289,10 @@ const App = () => {
           onChange={(event, newValue) => setActiveTab(newValue)}
           aria-label="expense tracker tabs"
           centered
+          // Added scrollable variant and allowScrollButtonsMobile for better mobile experience
+          variant="scrollable"
+          scrollButtons="auto"
+          allowScrollButtonsMobile
           sx={{ mb: 4, borderBottom: 1, borderColor: 'divider' }}
         >
           <Tab label="Add Expense" />
@@ -663,7 +668,7 @@ const SummaryTab = ({ totalExpenses, expensesByCategory, allCategories, salaryAm
           <Typography variant="h6" component="p" color="text.secondary" sx={{ mb: 1 }}>
             Total Income:
           </Typography>
-          <Typography variant="h4" component="p" sx={{ fontWeight: 'bold', color: '#2e7d32', fontSize: { xs: '2.5rem', sm: '3rem' } }}>
+          <Typography variant="h4" component="p" sx={{ fontWeight: 'bold', color: '#2e7d32', fontSize: { xs: '2rem', sm: '3rem' } }}>
             ${salaryAmount.toFixed(2)}
           </Typography>
         </CardContent>
@@ -673,13 +678,12 @@ const SummaryTab = ({ totalExpenses, expensesByCategory, allCategories, salaryAm
           <Typography variant="h6" component="p" color="text.secondary" sx={{ mb: 1 }}>
             Total Expenses:
           </Typography>
-          <Typography variant="h4" component="p" sx={{ fontWeight: 'bold', color: '#c62828', fontSize: { xs: '2.5rem', sm: '3rem' } }}>
+          <Typography variant="h4" component="p" sx={{ fontWeight: 'bold', color: '#c62828', fontSize: { xs: '2rem', sm: '3rem' } }}>
             ${totalExpenses.toFixed(2)}
           </Typography>
         </CardContent>
       </Card>
-      <Card sx={{
-        flexGrow: 1, borderRadius: '12px', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.05)',
+      <Card sx={{ flexGrow: 1, borderRadius: '12px', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.05)',
         bgcolor: remainingBalance >= 0 ? '#e3f2fd' : '#fff3e0'
       }}>
         <CardContent sx={{ textAlign: 'center', p: 3 }}>
@@ -690,7 +694,7 @@ const SummaryTab = ({ totalExpenses, expensesByCategory, allCategories, salaryAm
             sx={{
               fontWeight: 'bold',
               color: remainingBalance >= 0 ? '#1565c0' : '#ef6c00',
-              fontSize: { xs: '2.5rem', sm: '3rem' }
+              fontSize: { xs: '2rem', sm: '3rem' }
             }}
           >
             ${remainingBalance.toFixed(2)}
@@ -709,7 +713,7 @@ const SummaryTab = ({ totalExpenses, expensesByCategory, allCategories, salaryAm
     ) : (
       <Stack direction="row" flexWrap="wrap" spacing={2} useFlexGap sx={{ justifyContent: 'center' }}>
         {allCategories.map((category) => (
-          <Card key={category} sx={{ minWidth: 180, flexGrow: 1, borderRadius: '8px', boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.03)', bgcolor: '#fbfbfb' }}>
+          <Card key={category} sx={{ minWidth: { xs: '100%', sm: 180 }, flexGrow: 1, borderRadius: '8px', boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.03)', bgcolor: '#fbfbfb' }}>
             <CardContent sx={{ textAlign: 'center', p: 2 }}>
               <Typography variant="subtitle1" component="p" color="text.primary" sx={{ fontWeight: 'medium' }}>
                 {category}
