@@ -186,8 +186,8 @@ const App = () => {
     // Check if any expenses are using this category
     const isCategoryUsed = expenses.some(expense => expense.category === categoryToDelete);
     if (isCategoryUsed) {
-        showMessage(`Cannot delete category "${categoryToDelete}" because it is currently used by one or more expenses.`, 'error');
-        return;
+      showMessage(`Cannot delete category "${categoryToDelete}" because it is currently used by one or more expenses.`, 'error');
+      return;
     }
 
     setCustomCategories((prevCategories) => prevCategories.filter((cat) => cat !== categoryToDelete));
@@ -430,13 +430,20 @@ const AddExpenseTab = ({
             </Typography>
             <Stack spacing={2}>
               {expenseItems.map((item) => (
-                <Stack key={item.id} direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center">
+                <Stack
+                  key={item.id}
+                  direction="row" // Always keep this as a row for name, amount, and delete icon
+                  spacing={2}
+                  alignItems="center" // Vertically align items in the row
+                  sx={{ width: '100%' }}
+                >
                   <TextField
                     label="Item Name"
                     value={item.name}
                     onChange={(e) => handleItemChange(item.id, 'name', e.target.value)}
                     fullWidth
                     required
+                    sx={{ flexGrow: 1 }}
                   />
                   <TextField
                     label="Amount ($)"
@@ -446,13 +453,14 @@ const AddExpenseTab = ({
                     fullWidth
                     required
                     inputProps={{ step: "0.01", min: "0.01" }}
+                    sx={{ flexGrow: 1 }}
                   />
                   {expenseItems.length > 1 && (
                     <IconButton
                       onClick={() => removeItemRow(item.id)}
                       color="error"
                       aria-label="remove item"
-                      sx={{ mt: { xs: 1, sm: 0 } }}
+                      sx={{ flexShrink: 0 }} // Prevent icon from shrinking
                     >
                       <DeleteIcon />
                     </IconButton>
@@ -683,7 +691,8 @@ const SummaryTab = ({ totalExpenses, expensesByCategory, allCategories, salaryAm
           </Typography>
         </CardContent>
       </Card>
-      <Card sx={{ flexGrow: 1, borderRadius: '12px', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.05)',
+      <Card sx={{
+        flexGrow: 1, borderRadius: '12px', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.05)',
         bgcolor: remainingBalance >= 0 ? '#e3f2fd' : '#fff3e0'
       }}>
         <CardContent sx={{ textAlign: 'center', p: 3 }}>
