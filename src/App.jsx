@@ -245,7 +245,8 @@ const App = () => {
       sx={{
         minHeight: '100vh',
         background: 'linear-gradient(to bottom right, #f5f7fa, #c3cfe2)',
-        p: { xs: 2, sm: 4 },
+        // Reduced padding on extra-small screens for a tighter fit
+        p: { xs: 1, sm: 4 },
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -255,9 +256,11 @@ const App = () => {
       <Paper
         elevation={6}
         sx={{
-          p: { xs: 3, sm: 6 },
+          // Reduced padding on extra-small screens for a tighter fit
+          p: { xs: 2, sm: 6 },
           width: '100%',
-          maxWidth: '960px',
+          // Adjusted maxWidth to allow more flexibility on smaller screens
+          maxWidth: { xs: 'calc(100% - 16px)', sm: '960px' }, // 100% minus padding
           borderRadius: '12px',
           border: '1px solid #e0e0e0',
           boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.08)',
@@ -430,42 +433,43 @@ const AddExpenseTab = ({
             </Typography>
             <Stack spacing={2}>
               {expenseItems.map((item) => (
-                <Stack
+                <Box
                   key={item.id}
-                  direction="row" // Always keep this as a row for name, amount, and delete icon
-                  spacing={2}
-                  alignItems="center" // Vertically align items in the row
-                  sx={{ width: '100%' }}
+                  sx={{
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: { xs: 'column', sm: 'row' }, // Stack vertically on xs, row on sm+
+                    gap: { xs: 1, sm: 2 }, // Reduced gap on xs for tighter fit
+                    alignItems: { xs: 'flex-end', sm: 'center' } // Align delete button to end on xs, center on sm+
+                  }}
                 >
                   <TextField
                     label="Item Name"
                     value={item.name}
                     onChange={(e) => handleItemChange(item.id, 'name', e.target.value)}
-                    fullWidth
+                    sx={{ flexGrow: 1, width: { xs: '100%', sm: 'auto' } }} // Full width on xs, flexible on sm+
                     required
-                    sx={{ flexGrow: 1 }}
                   />
                   <TextField
                     label="Amount ($)"
                     type="number"
                     value={item.amount}
                     onChange={(e) => handleItemChange(item.id, 'amount', e.target.value)}
-                    fullWidth
+                    sx={{ flexGrow: 1, width: { xs: '100%', sm: 'auto' } }} // Full width on xs, flexible on sm+
                     required
                     inputProps={{ step: "0.01", min: "0.01" }}
-                    sx={{ flexGrow: 1 }}
                   />
                   {expenseItems.length > 1 && (
                     <IconButton
                       onClick={() => removeItemRow(item.id)}
                       color="error"
                       aria-label="remove item"
-                      sx={{ flexShrink: 0 }} // Prevent icon from shrinking
+                      sx={{ flexShrink: 0, mt: { xs: -5, sm: 0 } }} // Adjusted margin top for xs to pull it up
                     >
                       <DeleteIcon />
                     </IconButton>
                   )}
-                </Stack>
+                </Box>
               ))}
             </Stack>
             <Button
